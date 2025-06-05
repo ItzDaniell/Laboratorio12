@@ -1,5 +1,6 @@
 package com.tecsup.petclinic.services;
 
+import com.tecsup.petclinic.entities.Pet;
 import com.tecsup.petclinic.entities.Visit;
 import com.tecsup.petclinic.exception.VisitNotFoundException;
 
@@ -48,4 +49,6 @@ public interface VisitService {
      * @return
      */
     List<Visit> findByDate(LocalDate date) throws VisitNotFoundException;
+
+    List<Visit> findAll();
 }

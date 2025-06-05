@@ -60,11 +60,11 @@ public class VisitController {
         VisitDTO updatedVisitDTO = null;
 
         try {
-            Visit visitToUpdate = visitService.findById(id); /
+            Visit visitToUpdate = visitService.findById(id);
 
             // Update fields
             visitToUpdate.setPetId(visitDTO.getPetId());
-            visitToUpdate.setDate(mapper.stringToDate(visitDTO.getDate()));
+            visitToUpdate.setDate(mapper.stringToDate(String.valueOf(visitDTO.getDate())));
             visitToUpdate.setDescription(visitDTO.getDescription());
 
             visitService.update(visitToUpdate);

@@ -55,4 +55,9 @@ public class VisitServiceImpl implements VisitService {
         visits.forEach(visit -> log.info("{}", visit));
         return visits;
     }
+
+    @Override
+    public List<Visit> findAll() {
+        return visitRepository.findAll();
+    }
 }

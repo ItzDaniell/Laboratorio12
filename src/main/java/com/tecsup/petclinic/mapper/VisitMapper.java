@@ -38,7 +38,7 @@ public interface VisitMapper {
     }
 
     @Mapping(source = "date", target = "date")
-    VisitDTO toVisitTO(Visit visit);
+    VisitDTO toVisitDTO(Visit visit);
 
     default String dateToString(LocalDate date) {
 
