@@ -37,8 +37,8 @@ public interface VisitMapper {
         }
     }
 
-    @Mapping(source = "birthDate", target = "birthDate")
-    PetDTO toPetTO(Pet pet);
+    @Mapping(source = "date", target = "date")
+    VisitDTO toVisitTO(Visit visit);
 
     default String dateToString(LocalDate date) {
 
@@ -49,8 +49,6 @@ public interface VisitMapper {
             return "";
         }
     }
-
     List<VisitDTO> toVisitDTOList(List<Visit> visitList);
-    
     List<Visit> toVisitList(List<VisitDTO> visitDTOList);
 }

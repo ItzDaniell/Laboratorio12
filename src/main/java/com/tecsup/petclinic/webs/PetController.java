@@ -21,7 +21,7 @@ import com.tecsup.petclinic.services.PetService;
 import java.util.List;
 
 /**
- * 
+ *
  * @author jgomezm
  *
  */
@@ -29,130 +29,130 @@ import java.util.List;
 @Slf4j
 public class PetController {
 
-	String name = null;
+    String name = null;
 
-	//@Autowired
-	private PetService petService;
+    //@Autowired
+    private PetService petService;
 
-	//@Autowired
-	private PetMapper mapper;
+    //@Autowired
+    private PetMapper mapper;
 
-	/**
-	 *  Change
-	 * @param petService
-	 * @param mapper
-	 */
-	public PetController(PetService petService, PetMapper mapper){
-		this.petService = petService;
-		this.mapper = mapper ;
-	}
+    /**
+     *  Change
+     * @param petService
+     * @param mapper
+     */
+    public PetController(PetService petService, PetMapper mapper){
+        this.petService = petService;
+        this.mapper = mapper ;
+    }
 
-	/**
-	 * Get all pets
-	 *
-	 * @return
-	 */
-	@GetMapping(value = "/pets")
-	public ResponseEntity<List<PetDTO>> findAllPets() {
+    /**
+     * Get all pets
+     *
+     * @return
+     */
+    @GetMapping(value = "/pets")
+    public ResponseEntity<List<PetDTO>> findAllPets() {
 
-		List<Pet> pets = petService.findAll();
-		log.info("pets: " + pets);
-		pets.forEach(item -> log.info("Pet >>  {} ", item));
+        List<Pet> pets = petService.findAll();
+        log.info("pets: " + pets);
+        pets.forEach(item -> log.info("Pet >>  {} ", item));
 
-		List<PetDTO> petsTO = this.mapper.toPetTOList(pets);
-		log.info("petsTO: " + petsTO);
-		petsTO.forEach(item -> log.info("PetTO >>  {} ", item));
+        List<PetDTO> petsTO = this.mapper.toPetTOList(pets);
+        log.info("petsTO: " + petsTO);
+        petsTO.forEach(item -> log.info("PetTO >>  {} ", item));
 
-		return ResponseEntity.ok(petsTO);
+        return ResponseEntity.ok(petsTO);
 
-	}
-
-
-	/**
-	 * Create pet
-	 *
-	 * @param petTO
-	 * @return
-	 */
-	@PostMapping(value = "/pets")
-	@ResponseStatus(HttpStatus.CREATED)
-	ResponseEntity<PetDTO> create(@RequestBody PetDTO petTO) {
-
-		Pet newPet = this.mapper.toPet(petTO);
-		PetDTO newPetTO = this.mapper.toPetTO(petService.create(newPet));
-
-		return  ResponseEntity.status(HttpStatus.CREATED).body(newPetTO);
-
-	}
+    }
 
 
-	/**
-	 * Find pet by id
-	 *
-	 * @param id
-	 * @return
-	 * @throws PetNotFoundException
-	 */
-	@GetMapping(value = "/pets/{id}")
-	ResponseEntity<PetDTO> findById(@PathVariable Integer id) {
+    /**
+     * Create pet
+     *
+     * @param petTO
+     * @return
+     */
+    @PostMapping(value = "/pets")
+    @ResponseStatus(HttpStatus.CREATED)
+    ResponseEntity<PetDTO> create(@RequestBody PetDTO petTO) {
 
-		PetDTO petTO = null;
+        Pet newPet = this.mapper.toPet(petTO);
+        PetDTO newPetTO = this.mapper.toPetTO(petService.create(newPet));
 
-		try {
-			Pet pet = petService.findById(id);
-			petTO = this.mapper.toPetTO(pet);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(newPetTO);
 
-		} catch (PetNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(petTO);
-	}
+    }
 
-	/**
-	 * Update and create pet
-	 *
-	 * @param petTO
-	 * @param id
-	 * @return
-	 */
-	@PutMapping(value = "/pets/{id}")
-	ResponseEntity<PetDTO>  update(@RequestBody PetDTO petTO, @PathVariable Integer id) {
 
-		PetDTO updatePetTO = null;
+    /**
+     * Find pet by id
+     *
+     * @param id
+     * @return
+     * @throws PetNotFoundException
+     */
+    @GetMapping(value = "/pets/{id}")
+    ResponseEntity<PetDTO> findById(@PathVariable Integer id) {
 
-		try {
+        PetDTO petTO = null;
 
-			Pet updatePet = petService.findById(id);
+        try {
+            Pet pet = petService.findById(id);
+            petTO = this.mapper.toPetTO(pet);
 
-			updatePet.setName(petTO.getName());
-			updatePet.setOwnerId(petTO.getOwnerId());
-			updatePet.setTypeId(petTO.getTypeId());
+        } catch (PetNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(petTO);
+    }
 
-			petService.update(updatePet);
+    /**
+     * Update and create pet
+     *
+     * @param petTO
+     * @param id
+     * @return
+     */
+    @PutMapping(value = "/pets/{id}")
+    ResponseEntity<PetDTO>  update(@RequestBody PetDTO petTO, @PathVariable Integer id) {
 
-			updatePetTO = this.mapper.toPetTO(updatePet);
+        PetDTO updatePetTO = null;
 
-		} catch (PetNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+        try {
 
-		return ResponseEntity.ok(updatePetTO);
-	}
+            Pet updatePet = petService.findById(id);
 
-	/**
-	 * Delete pet by id
-	 *
-	 * @param id
-	 */
-	@DeleteMapping(value = "/pets/{id}")
-	ResponseEntity<String> delete(@PathVariable Integer id) {
+            updatePet.setName(petTO.getName());
+            updatePet.setOwnerId(petTO.getOwnerId());
+            updatePet.setTypeId(petTO.getTypeId());
 
-		try {
-			petService.delete(id);
-			return ResponseEntity.ok(" Delete ID :" + id);
-		} catch (PetNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
-	}
+            petService.update(updatePet);
+
+            updatePetTO = this.mapper.toPetTO(updatePet);
+
+        } catch (PetNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updatePetTO);
+    }
+
+    /**
+     * Delete pet by id
+     *
+     * @param id
+     */
+    @DeleteMapping(value = "/pets/{id}")
+    ResponseEntity<String> delete(@PathVariable Integer id) {
+
+        try {
+            petService.delete(id);
+            return ResponseEntity.ok(" Delete ID :" + id);
+        } catch (PetNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

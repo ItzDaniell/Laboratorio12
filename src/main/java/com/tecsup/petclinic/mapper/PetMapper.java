@@ -1,9 +1,7 @@
 package com.tecsup.petclinic.mapper;
 
 import com.tecsup.petclinic.dtos.PetDTO;
-import com.tecsup.petclinic.dtos.VisitDTO;
 import com.tecsup.petclinic.entities.Pet;
-import com.tecsup.petclinic.entities.Visit;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueMappingStrategy;
@@ -32,11 +30,12 @@ public interface PetMapper {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+
 		return date;
 	}
 
-	@Mapping(source = "date", target = "date")
-	VisitDTO toVisit(Visit visit);
+	@Mapping(source = "birthDate", target = "birthDate")
+	PetDTO toPetTO(Pet pet);
 
 	default String dateToString(Date date) {
 
@@ -46,9 +45,12 @@ public interface PetMapper {
 		} else {
 			return "";
 		}
+
 	}
 
 	List<PetDTO> toPetTOList(List<Pet> petList);
 
 	List<Pet> toPetList(List<PetDTO> petTOList);
+
+
 }
