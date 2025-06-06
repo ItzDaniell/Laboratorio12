@@ -1,12 +1,10 @@
 package com.tecsup.petclinic.webs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-<<<<<<< HEAD
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.JsonPath;
-=======
->>>>>>> 437d76b4e4654d85b08623a6ab369a961f3a7e2c
+import com.tecsup.petclinic.dtos.PetDTO;
 import com.tecsup.petclinic.dtos.VisitDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -22,17 +20,13 @@ import java.time.LocalDate;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDate;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @AutoConfigureMockMvc
@@ -100,7 +94,7 @@ public class VisitControllerTest {
         mockMvc.perform(delete("/visits/" + id))
                 .andExpect(status().isOk());
     }
-    
+
     @Test
     public void testCreateVisit() throws Exception {
 
@@ -123,4 +117,45 @@ public class VisitControllerTest {
                 .andExpect(jsonPath("$.date", is(DATE.toString())))
                 .andExpect(jsonPath("$.description", is(DESCRIPTION)));
     }
+
+    	/**
+     * 
+     * @throws Exception
+     */
+	@Test
+	public void testDeletePet() throws Exception {
+
+		String PET_NAME = "Beethoven3";
+		int TYPE_ID = 1;
+		int OWNER_ID = 1;
+		String BIRTH_DATE = "2020-05-20";
+
+		PetDTO newPetTO = new PetDTO();
+		newPetTO.setName(PET_NAME);
+		newPetTO.setTypeId(TYPE_ID);
+		newPetTO.setOwnerId(OWNER_ID);
+		newPetTO.setBirthDate(BIRTH_DATE);
+
+		ResultActions mvcActions = mockMvc.perform(post("/pets")
+						.content(om.writeValueAsString(newPetTO))
+						.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isCreated());
+
+		String response = mvcActions.andReturn().getResponse().getContentAsString();
+
+		Integer id = JsonPath.parse(response).read("$.id");
+
+		mockMvc.perform(delete("/pets/" + id ))
+				/*.andDo(print())*/
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void testDeletePetKO() throws Exception {
+
+		mockMvc.perform(delete("/pets/" + "1000" ))
+				/*.andDo(print())*/
+				.andExpect(status().isNotFound());
+	}
 }
