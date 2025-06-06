@@ -1,9 +1,12 @@
 package com.tecsup.petclinic.webs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+<<<<<<< HEAD
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.JsonPath;
+=======
+>>>>>>> 437d76b4e4654d85b08623a6ab369a961f3a7e2c
 import com.tecsup.petclinic.dtos.VisitDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDate;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
 @AutoConfigureMockMvc
 @SpringBootTest
 @Slf4j
@@ -40,7 +52,6 @@ public class VisitControllerTest {
 
     @Test
     public void testUpdateVisit() throws Exception {
-
         int petId = 1;
         LocalDate visitDate = LocalDate.parse("2023-05-29");
         String description = "Test description";
@@ -88,5 +99,28 @@ public class VisitControllerTest {
 
         mockMvc.perform(delete("/visits/" + id))
                 .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testCreateVisit() throws Exception {
+
+        int PET_ID = 1;
+        LocalDate DATE = LocalDate.of(2024, 6, 5);
+        String DESCRIPTION = "Consulta de control";
+
+        VisitDTO newVisitDTO = new VisitDTO();
+        newVisitDTO.setPetId(PET_ID);
+        newVisitDTO.setDate(DATE);
+        newVisitDTO.setDescription(DESCRIPTION);
+
+        this.mockMvc.perform(post("/visits")
+                        .content(om.writeValueAsString(newVisitDTO))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+
+                .andExpect(jsonPath("$.petId", is(PET_ID)))
+                .andExpect(jsonPath("$.date", is(DATE.toString())))
+                .andExpect(jsonPath("$.description", is(DESCRIPTION)));
     }
 }
