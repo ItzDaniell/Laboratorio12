@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 public class VisitDTO {
     private Integer id;
-    private Integer petId;
+    private int petId;
     private LocalDate date;
     private String description;
 }

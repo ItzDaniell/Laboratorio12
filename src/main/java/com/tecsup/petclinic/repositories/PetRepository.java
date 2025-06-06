@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import com.tecsup.petclinic.entities.Pet;
 
 /**
- * 
+ *
  * @author jgomezm
  *
  */
 @Repository
-public interface PetRepository 
-	extends JpaRepository<Pet, Integer> {
+public interface PetRepository
+		extends JpaRepository<Pet, Integer> {
 
 	// Fetch pets by name
 	List<Pet> findByName(String name);

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 /**
- * 
+ *
  * @author jgomezm
  *
  */
@@ -17,12 +17,13 @@ import lombok.NoArgsConstructor;
 public class PetDTO {
 
 	private Integer id;
-	
+
 	private String name;
-	
+
 	private int typeId;
 
 	private int ownerId;
 
 	private String birthDate;
+
 }

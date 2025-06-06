@@ -7,14 +7,13 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 /**
- * 
+ *
  * @author jgomezm
  *
  */
 @Entity(name = "pets")
 @Data
 public class Pet {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -27,7 +26,7 @@ public class Pet {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "birth_date")
 	private Date birthDate;
-	
+
 	public Pet() {
 	}
 

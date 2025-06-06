@@ -212,6 +212,5 @@ public class PetControllerTest {
 				/*.andDo(print())*/
 				.andExpect(status().isOk());
 	}
-
 }
     
